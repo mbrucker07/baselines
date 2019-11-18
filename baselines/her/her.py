@@ -118,7 +118,6 @@ def learn(*, network, env, total_timesteps,
          json.dump(params, f)
     params = config.prepare_params(params)
     params['rollout_batch_size'] = env.num_envs
-
     if demo_file is not None:
         params['bc_loss'] = 1
     params.update(kwargs)
@@ -169,7 +168,13 @@ def learn(*, network, env, total_timesteps,
 
     n_cycles = params['n_cycles']
     n_epochs = total_timesteps // n_cycles // rollout_worker.T // rollout_worker.rollout_batch_size
-
+    # TODO: remove follwing print section
+    print("rollout_batch_size: {}".format(params['rollout_batch_size']))
+    print("num_cpu: {}".format(num_cpu))
+    print("n_epochs: {} = total_timesteps {} * n_cycles {} * rollout_worker.T {} * rollout_batch_size {}".format(n_epochs,
+                                                                                                                 n_cycles,
+                                                                                                                 rollout_worker.T,
+                                                                                                                 rollout_worker.rollout_batch_size))
     return train(
         save_path=save_path, policy=policy, rollout_worker=rollout_worker,
         evaluator=evaluator, n_epochs=n_epochs, n_test_rollouts=params['n_test_rollouts'],

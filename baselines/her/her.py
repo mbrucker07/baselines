@@ -172,6 +172,7 @@ def learn(*, network, env, total_timesteps,
     print("rollout_batch_size: {}".format(params['rollout_batch_size']))
     print("num_cpu: {}".format(num_cpu))
     print("n_epochs: {} = total_timesteps {} * n_cycles {} * rollout_worker.T {} * rollout_batch_size {}".format(n_epochs,
+                                                                                                                 total_timesteps,
                                                                                                                  n_cycles,
                                                                                                                  rollout_worker.T,
                                                                                                                  rollout_worker.rollout_batch_size))

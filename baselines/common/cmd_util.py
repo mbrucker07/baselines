@@ -60,8 +60,10 @@ def make_vec_env(env_id, env_type, num_env, seed,
 
 
 def make_env(env_id, env_type, mpi_rank=0, subrank=0, seed=None, reward_scale=1.0, gamestate=None, flatten_dict_observations=True, wrapper_kwargs=None, env_kwargs=None, logger_dir=None, initializer=None):
+    print("Before initializing: Initializer not none? {}".format(initializer is not None)) # TODO: remove
     if initializer is not None:
         initializer(mpi_rank=mpi_rank, subrank=subrank)
+    print("initialized {}.{}".format(mpi_rank, subrank)) # TODO: remove
 
     wrapper_kwargs = wrapper_kwargs or {}
     env_kwargs = env_kwargs or {}
@@ -79,6 +81,7 @@ def make_env(env_id, env_type, mpi_rank=0, subrank=0, seed=None, reward_scale=1.
         env = retro_wrappers.make_retro(game=env_id, max_episode_steps=10000, use_restricted_actions=retro.Actions.DISCRETE, state=gamestate)
     else:
         env = gym.make(env_id, **env_kwargs)
+        print("Env made in make_env! {}.{}".format(mpi_rank, subrank)) # TODO: Remove
 
     if flatten_dict_observations and isinstance(env.observation_space, gym.spaces.Dict):
         env = FlattenObservation(env)

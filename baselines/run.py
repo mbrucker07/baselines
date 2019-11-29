@@ -105,13 +105,16 @@ def build_env(args):
             env = VecFrameStack(env, frame_stack_size)
 
     else:
+        print("TF config starting...")
         config = tf.ConfigProto(allow_soft_placement=True,
                                intra_op_parallelism_threads=1,
                                inter_op_parallelism_threads=1)
         config.gpu_options.allow_growth = True
+        print("Get session ...")
         get_session(config=config)
-
+        
         flatten_dict_observations = alg not in {'her'}
+        print("Starting make_vec_env")
         env = make_vec_env(env_id, env_type, args.num_env or 1, seed, reward_scale=args.reward_scale, flatten_dict_observations=flatten_dict_observations)
 
         if env_type == 'mujoco':

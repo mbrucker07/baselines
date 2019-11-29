@@ -87,6 +87,7 @@ def build_env(args):
     ncpu = multiprocessing.cpu_count()
     if sys.platform == 'darwin': ncpu //= 2
     nenv = args.num_env or ncpu #TODO: removed or ncpu
+    print("ncpu = {}".format(ncpu))
     print("Nenv = {}".format(nenv))
     alg = args.alg
     seed = args.seed

@@ -273,3 +273,6 @@ def learn(network, env,
 
 
     return agent
+
+    def save(self, save_path):
+        U.save_variables(save_path)

@@ -2,6 +2,7 @@ import os
 import time
 from collections import deque
 import pickle
+import tensorflow as tf
 
 from baselines.ddpg.ddpg_learner import DDPG
 from baselines.ddpg.models import Actor, Critic
@@ -42,7 +43,11 @@ def learn(network, env,
           tau=0.01,
           eval_env=None,
           param_noise_adaption_interval=50,
+          activation="tanh", # TODO: remove
           **network_kwargs):
+    if activation=="relu": #TODO: remove
+        network_kwargs["activation"]=tf.nn.relu
+
 
     set_global_seeds(seed)
 
@@ -274,5 +279,3 @@ def learn(network, env,
 
     return agent
 
-    def save(self, save_path):
-        U.save_variables(save_path)

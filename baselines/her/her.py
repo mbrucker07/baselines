@@ -4,7 +4,6 @@ import click
 import numpy as np
 import json
 from mpi4py import MPI
-
 from baselines import logger
 from baselines.common import set_global_seeds, tf_util
 from baselines.common.mpi_moments import mpi_moments

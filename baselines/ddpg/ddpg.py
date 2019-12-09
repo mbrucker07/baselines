@@ -44,6 +44,7 @@ def learn(network, env,
           eval_env=None,
           param_noise_adaption_interval=50,
           activation="tanh", # TODO: remove
+          load_path=None, #TODO remove
           **network_kwargs):
     if activation=="relu": #TODO: remove
         network_kwargs["activation"]=tf.nn.relu
@@ -98,6 +99,9 @@ def learn(network, env,
         reward_scale=reward_scale)
     logger.info('Using agent with the following configuration:')
     logger.info(str(agent.__dict__.items()))
+
+    if load_path is not None: # TODO: remove
+        U.load_variables(load_path)
 
     eval_episode_rewards_history = deque(maxlen=100)
     episode_rewards_history = deque(maxlen=100)

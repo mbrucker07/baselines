@@ -10,6 +10,7 @@ from baselines.ddpg.memory import Memory
 from baselines.ddpg.noise import AdaptiveParamNoiseSpec, NormalActionNoise, OrnsteinUhlenbeckActionNoise
 from baselines.common import set_global_seeds
 import baselines.common.tf_util as U
+import copy #TODO new
 
 from baselines import logger
 import numpy as np
@@ -48,7 +49,8 @@ def learn(network, env,
           **network_kwargs):
     if activation=="relu": #TODO: remove
         network_kwargs["activation"]=tf.nn.relu
-
+    if eval_env==True:
+        eval_env=env
 
     set_global_seeds(seed)
 
@@ -166,7 +168,7 @@ def learn(network, env,
                 obs = new_obs
 
                 for d in range(len(done)):
-                    if done[d]:
+                    if done[d] or t_rollout == nb_rollout_steps-1: # TODO: added or and second part!
                         # Episode done.
                         epoch_episode_rewards.append(episode_reward[d])
                         episode_rewards_history.append(episode_reward[d])
@@ -177,6 +179,9 @@ def learn(network, env,
                         episodes += 1
                         if nenvs == 1:
                             agent.reset()
+                        epoch_episode_reward=[]
+                        epoch_episode_step
+
 
 
 
@@ -210,7 +215,7 @@ def learn(network, env,
 
                     eval_qs.append(eval_q)
                     for d in range(len(eval_done)):
-                        if eval_done[d]:
+                        if eval_done[d] or t_rollout == nb_eval_steps-1: # TODO added second part of or
                             eval_episode_rewards.append(eval_episode_reward[d])
                             eval_episode_rewards_history.append(eval_episode_reward[d])
                             eval_episode_reward[d] = 0.0
